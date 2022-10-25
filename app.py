@@ -1,19 +1,21 @@
 from flask import Flask,url_for, request, render_template
 
+
 app = Flask(__name__)
 
-app.run(debug=True)
+
+
+
 
 @app.route('/')
 def index():
-    return 'Privet Artem'
+    return render_template('index.j2')
 
 
-
-@app.route('/hello/')
-@app.route('/hello/<name>')
+@app.route('/index/')
+@app.route('/index/<name>')
 def hello(name=None):
-    return render_template('hello.j2', name=name)
+    return render_template('index.j2', name=name)
 
 
 @app.route('/about')
