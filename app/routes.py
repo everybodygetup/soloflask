@@ -16,6 +16,16 @@ def about():
     return render_template('about.j2')
 
 
+
+@app.route('/wed')
+def wed():
+    return render_template('wed.j2')
+
+
+@app.route('/user/<string:name>/<int:id>')
+def user(name,id):
+    return 'User page: ' + name + '-' + str(id)
+
 @app.route('/login', methods=['GET', 'POST'])
 def login():
     form = LoginForm()
