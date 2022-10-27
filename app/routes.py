@@ -17,9 +17,9 @@ def about():
 
 
 
-@app.route('/wed')
-def wed():
-    return render_template('wed.j2')
+@app.route('/ved',methods=['POST','GET'])
+def ved():
+    return render_template('ved.j2')
 
 
 @app.route('/user/<string:name>/<int:id>')
