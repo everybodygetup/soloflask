@@ -1,0 +1,23 @@
+{% extends 'base.j2' %}
+
+{% block content %}
+ <h1>Оставить отзыв</h1>
+<div class="container mt-5">
+    <form action="{{ url_for('ved2') }}" method="post">
+      {{ form.csrf_token }}
+    <p>
+      <fieldset>
+        {{ form.title.label }}<br>
+        {{ form.title }}<br>
+      </fieldset>
+    </p>
+    <p>
+      <fieldset>
+        {{ form.text.label }}<br>
+        {{ form.text }}<br>
+      </fieldset>
+    </p>
+      <p>{{ form.submit }}</p>
+    </form>
+  </div>
+{% endblock %}

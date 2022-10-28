@@ -5,6 +5,9 @@ from flask_migrate import Migrate
 from flask_security import Security
 from flask_sqlalchemy import SQLAlchemy
 
+
+
+
 babel = Babel()
 db = SQLAlchemy()
 executor = Executor()

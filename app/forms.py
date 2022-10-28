@@ -1,5 +1,5 @@
 from flask_wtf import FlaskForm
-from wtforms import StringField, PasswordField, BooleanField, SubmitField
+from wtforms import StringField, PasswordField, BooleanField, SubmitField,TextAreaField
 from wtforms.validators import DataRequired
 
 class LoginForm(FlaskForm):
@@ -9,3 +9,9 @@ class LoginForm(FlaskForm):
     submit = SubmitField('Sign In')
 
 
+class VedForm(FlaskForm):
+    """Форма заполнения ТНВЭД."""
+
+    title = StringField("Заголовок")
+    text = TextAreaField("Код")
+    submit = SubmitField("Добавить код")
