@@ -25,6 +25,7 @@ def about():
 
 @app.route('/ved',methods=['POST','GET'])
 def ved():
+    """Создание бд кодов только из модели напрямую"""
     if request.method == "POST":
         title = request.form['title']
         intro = request.form['intro']
@@ -35,15 +36,12 @@ def ved():
         try:
             db.session.add(ved_db)
             db.session.commit()
-            return redirect('/')
+            return redirect('/posts')
         except:
             return "Произошла ошибка"
     return render_template('ved.j2')
 
 
-@app.route('/user/<string:name>/<int:id>')
-def user(name,id):
-    return 'User page: ' + name + '-' + str(id)
 
 @app.route('/login', methods=['GET', 'POST'])
 def login():
@@ -59,17 +57,30 @@ def login():
 @app.route("/ved2", methods=["GET", "POST"])
 #@roles_accepted("admin")
 def ved2():
-    """Создание отзыва."""
+    """Создание бд кодов."""
     ved_form = VedForm(obj=request.form)
 
     if ved_form.validate_on_submit():
         vd_db = TnVed(
             title=request.form.get("title"),
-            text=request.form.get("text"),
-        
+            text=request.form.get("text")
         )
         db.session.add(vd_db)
         db.session.commit()
-        flash("Отзыв добавлен", "success")
-        return redirect(url_for("index", id_feedback=vd_db.id))
+        flash("Код ТНВЭД добавлен", "success")
+        return redirect(url_for("posts", id_feedback=vd_db.id))
     return render_template("ved2.j2", form=ved_form)
+
+
+@app.route('/posts')
+def posts():
+    """Показывает посты из БД ved/ved2"""
+    ved_db = TnVed.query.order_by(TnVed.date.desc()).all()
+    return render_template('posts.j2',ved_db=ved_db)
+
+
+@app.route('/posts/<int:id>')
+def post_detail(id):
+    """Обработка нужного url адреса"""
+    ved_db = TnVed.query.get(id)
+    return render_template('post_detail.j2',ved_db=ved_db)
