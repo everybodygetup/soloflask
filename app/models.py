@@ -21,7 +21,7 @@ class Post(db.Model):
         return '<Post {}>'.format(self.body)
 
 
-class TnWed(db.Model):
+class TnVed(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     title = db.Column(db.String(100), primary_key=False)
     intro = db.Column(db.String(300), primary_key=False)

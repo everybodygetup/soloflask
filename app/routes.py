@@ -1,7 +1,13 @@
 from flask import flash, g, redirect, render_template, request, url_for
 
-from app import app
+from app import app,db
 from app.forms import LoginForm
+from app.models import TnVed
+
+
+@app.before_first_request
+def create_tables():
+    db.create_all()
 
 
 
@@ -19,6 +25,19 @@ def about():
 
 @app.route('/ved',methods=['POST','GET'])
 def ved():
+    if request.method == "POST":
+        title = request.form['title']
+        intro = request.form['intro']
+        text = request.form['text']
+
+        ved_db = TnVed(title=title,intro=intro,text=text)
+
+        try:
+            db.session.add(ved_db)
+            db.session.commit()
+            return redirect('/')
+        except:
+            return "Произошла ошибка"
     return render_template('ved.j2')
 
 
