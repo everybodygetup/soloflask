@@ -1,0 +1,17 @@
+{% extends "base.j2" %}
+
+
+{% block title %}
+{{ ved_db.title }}
+{% endblock %}
+
+
+{% block content %}
+<h1>{{ ved_db.title }}</h1>
+<div class="container mt-5">
+    <div class="alert alert-info">
+        <p>{{ ved_db.text }}</p>
+        <p><b>Дата: {{ ved_db.date.date() }}</b></p>
+    </div>
+</div>
+{% endblock %}
