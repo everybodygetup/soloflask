@@ -23,6 +23,41 @@ def about():
 
 
 
+@app.route('/posts/<int:id>/update',methods=['POST','GET'])
+def post_update(id):
+    """Редактировать запись"""
+    ved_db = TnVed.query.get(id)
+    if request.method == "POST":
+        ved_db.title = request.form['title']
+        ved_db.intro = request.form['intro']
+        ved_db.text = request.form['text']
+
+        try:
+            db.session.commit()
+            return redirect('/posts')
+        except:
+            return "Произошла ошибка"
+    else:
+        
+        return render_template('post_update.j2', ved_db=ved_db)
+
+
+    
+
+@app.route('/posts/<int:id>/del')
+def post_delete(id):
+    """Удаление из БД"""
+    ved_db = TnVed.query.get_or_404(id)
+
+    try:
+        db.session.delete(ved_db)
+        db.session.commit()
+        return redirect('/posts')
+    except:
+        return "Произошла ошибка"
+
+
+
 @app.route('/ved',methods=['POST','GET'])
 def ved():
     """Создание бд кодов только из модели напрямую"""
@@ -54,9 +89,9 @@ def login():
 
 
 
-@app.route("/ved2", methods=["GET", "POST"])
+#@app.route("/ved2", methods=["GET", "POST"])
 #@roles_accepted("admin")
-def ved2():
+#def ved2():
     """Создание бд кодов."""
     ved_form = VedForm(obj=request.form)
 
@@ -84,3 +119,6 @@ def post_detail(id):
     """Обработка нужного url адреса"""
     ved_db = TnVed.query.get(id)
     return render_template('post_detail.j2',ved_db=ved_db)
+
+
+
