@@ -10,8 +10,11 @@
 <h1>{{ ved_db.title }}</h1>
 <div class="container mt-5">
     <div class="alert alert-info">
+        <p>{{ ved_db.intro }}</p>
         <p>{{ ved_db.text }}</p>
         <p><b>Дата: {{ ved_db.date.date() }}</b></p>
+        <a href="/posts/{{ ved_db.id }}/del" class="btn btn-danger">Удалить</a>
+        <a href="/posts/{{ ved_db.id }}/update" class="btn btn-success">Редактировать</a>
     </div>
 </div>
 {% endblock %}
