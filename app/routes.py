@@ -71,6 +71,7 @@ def ved():
         try:
             db.session.add(ved_db)
             db.session.commit()
+            flash("Код ТНВЭД добавлен", "success")
             return redirect('/posts')
         except:
             return "Произошла ошибка"
