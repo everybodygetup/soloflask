@@ -20,7 +20,7 @@ def post_update(id):
             return "Произошла ошибка"
     else:
         
-        return render_template('post_update.j2', ved_db=ved_db)
+        return render_template('posts/post_update.j2', ved_db=ved_db)
 
 
     
@@ -37,16 +37,18 @@ def post_delete(id):
     except:
         return "Произошла ошибка"
 
+
+
 @posts.route('/posts')
 def post():
     """Показывает посты из БД ved/ved2"""
     ved_db = TnVed.query.order_by(TnVed.date.desc()).all()
-    return render_template('posts.j2',ved_db=ved_db)
+    return render_template('posts/posts.j2',ved_db=ved_db)
 
 
 @posts.route('/posts/<int:id>')
 def post_detail(id):
     """Обработка нужного url адреса"""
     ved_db = TnVed.query.get(id)
-    return render_template('post_detail.j2',ved_db=ved_db)
+    return render_template('posts/post_detail.j2',ved_db=ved_db)
 
