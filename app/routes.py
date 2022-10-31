@@ -5,16 +5,8 @@ from app.forms import LoginForm,VedForm
 from app.models import TnVed
 from flask_security import current_user
 
-@app.before_first_request
-def create_tables():
-    db.create_all()
 
 
-
-@app.route('/')
-@app.route('/index')
-def index():
-    return render_template('index.j2')
 
 
 @app.route('/about')
