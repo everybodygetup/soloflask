@@ -1,6 +1,6 @@
 from flask import Blueprint,request,render_template,redirect
 from app.extensions import db
-from app.models import TnVed
+from app.core.models import TnVed
 
 posts = Blueprint('posts', __name__, template_folder='templates')
 
