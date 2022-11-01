@@ -1,0 +1,115 @@
+{% macro errors(errors, bem_block='form') -%}
+  {% if errors %}
+    <ul class="{{ bem_block }}__errors">
+      {% for error in errors %}
+        <li>{{ error }}</li>
+      {% endfor %}
+    </ul>
+  {% endif %}
+{%- endmacro %}
+
+{% macro base(field, bem_block='form', floating_label=True) -%}
+  <div class="{{ bem_block }}__field{% if floating_label %} {{ bem_block }}__field--floating{% endif %}{% if field.errors %} form__field--error{% endif %}">
+    {{ field(class='%s__text' % bem_block, placeholder=field.label.text, **kwargs) }}
+    {{ field.label(class='%s__label' % bem_block) }}
+    {{ errors(field.errors) }}
+  </div>
+{%- endmacro %}
+
+{% macro base_no_label(field, bem_block='form', floating_label=True) -%}
+  <div class="{{ bem_block }}__field{% if floating_label %} {{ bem_block }}__field--floating{% endif %}{% if field.errors %} form__field--error{% endif %}">
+    {{ field(class='%s__text' % bem_block, placeholder=field.label.text, **kwargs) }}
+    {{ errors(field.errors) }}
+  </div>
+{%- endmacro %}
+
+{% macro checkbox(field, bem_block='form') -%}
+  <div class="{{ bem_block }}__field {{ bem_block }}__field--checkbox{% if field.errors %} {{ bem_block }}__field--error{% endif %}">
+    {{ field(class='%s__checkbox' % bem_block) }}
+    {{ field.label(class='%s__label' % bem_block, **kwargs) }}
+    {{ errors(field.errors) }}
+  </div>
+{%- endmacro %}
+
+{% macro radio(field, bem_block='form') -%}
+  <div class="{{ bem_block }}__field {{ bem_block }}__field--radio{% if field.errors %} {{ bem_block }}__field--error{% endif %}">
+    {{ field(class='%s__radio' % bem_block) }}
+    {{ field.label(class='%s__label' % bem_block, **kwargs) }}
+    {{ errors(field.errors) }}
+  </div>
+{%- endmacro %}
+
+{% macro btn(field, bem_block='form') %}
+  {{ field(class='%s__submit' % bem_block, **kwargs)|safe }}
+{% endmacro %}
+
+{% macro raw(field) %}
+  {{ field(**kwargs)|safe }}
+{% endmacro %}
+
+{# TODO: пересмотреть и выкинуть -> ===================================== #}
+
+{% macro text_bs(field, floating_label=True) -%}
+  <div class="{% if floating_label %}form-floating {% endif %}mb-3{% if field.errors %} has-validation{% endif %}">
+    {% if field.errors %}
+      {% set err_class = ' is-invalid' %}
+    {% endif %}
+    {{ field(class='form-control%s' % err_class, placeholder=field.label.text) }}
+    {{ field.label(class='form-label') }}
+    {% if field.errors %}
+      <div class="invalid-feedback">
+        {% for error in field.errors %}
+          [{{ error }}]
+        {% endfor %}
+      </div>
+    {% endif %}
+  </div>
+{%- endmacro %}
+
+{% macro text2(field) -%}
+  <div class="form__block{% if field.errors %} form__block--error{% endif %}">
+    {{ field.label(class='form__label') }}
+    {% set class_name = 'form__input form__input--error' if field.errors else 'form__input' %}
+    {{ field(class=class_name) }}
+    {% if field.errors %}
+      <div class="form__errors" hidden>
+        ошибки:
+        {% for error in field.errors %}
+          [{{ error }}]
+        {% endfor %}
+      </div>
+    {% endif %}
+  </div>
+{%- endmacro %}
+
+{% macro render_text_with_errors(field, modifier=False) %}
+  {% set class_name = 'form__text form__text--error' if field.errors else 'form__text' %}
+  {% if modifier %}
+    {% set class_name = class_name + ' form__text--' + modifier %}
+  {% endif %}
+  {% if field.errors %}
+    <small class="form__error">
+      {% for error in field.errors %}
+        {{ error }}<br>
+      {% endfor %}
+    </small>
+  {% endif %}
+  {{ field(class=class_name, **kwargs)|safe }}
+{% endmacro %}
+
+{% macro raw_label(field) %}
+  {{ field(**kwargs)|safe }}
+  {{ field.label(class='form__label') }}
+{% endmacro %}
+
+{% macro render_field_errors(field) %}
+  {% if field and field.errors %}
+    <p>
+      <small class="form__error">
+        {% for error in field.errors %}
+          {{ error }}<br>
+        {% endfor %}
+      </small>
+    </p>
+  {% endif %}
+{% endmacro %}

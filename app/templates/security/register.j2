@@ -1,0 +1,29 @@
+{% extends 'base.j2' %}
+{% from 'macros/form.j2' import base_no_label, btn, render_field_errors  %}
+{% set title = 'Регистрация' %}
+{% block content %}
+<section class="jumbotron">
+  <div class="container">
+    <div class="jumbotron__wrapper">
+      <h3 class="main__title title title--h2">Регистрация</h3>
+      <form class="form form--security" action="{{ url_for_security('register') }}" method="post"
+        name="register_user_form">
+        {{ register_user_form.hidden_tag() }}
+        {{ render_field_errors(register_user_form.csrf_token) }}
+        {{ base_no_label(register_user_form.email) }}
+        {{ base_no_label(register_user_form.password) }}
+        {% if register_user_form.password_confirm %}
+        {{ base_no_label(register_user_form.password_confirm, placeholder='Подтверждение пароля', modifier='pass') }}
+        {% endif %}
+        {{ btn(register_user_form.submit, value='Зарегистрироваться', class='button') }}
+        <div class="form__field">
+          <p class="main__text">Уже зарегистрированы? <a class="link" href="{{ url_for_security('login') }}">Войти</a></p>
+        </div>
+      </form>
+      <footer class="main__footer">
+        <p class="main__text"><a class="link" href="{{ url_for_security('send_confirmation') }}">Подтверждение регистрации</a></p>
+      </footer>
+    </div>
+  </div>
+</section>
+{% endblock %}

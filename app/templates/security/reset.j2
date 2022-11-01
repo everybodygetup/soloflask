@@ -1,0 +1,23 @@
+{% extends 'base.j2' %}
+{% from 'macros/form.j2' import base_no_label, btn, render_field_errors %}
+{% set title = 'Сброс пароля' %}
+{% block content %}
+<section class="jumbotron">
+  <div class="container">
+    <div class="jumbotron__wrapper">
+      <h3 class="main__title title title--h2">Сброс пароля</h3>
+      <form class="form form--security" action="{{ url_for_security('reset_password', token=reset_password_token) }}"
+        method="post" name="reset_password_form">
+        {{ reset_password_form.hidden_tag() }}
+        {{ render_field_errors(reset_password_form.csrf_token) }}
+        {{ base_no_label(reset_password_form.password) }}
+        {{ base_no_label(reset_password_form.password_confirm) }}
+        {{ btn(reset_password_form.submit, value='Сбросить пароль', class='button') }}
+      </form>
+      <footer class="main__footer">
+        <p class="main__text"><a class="link" href="{{ url_for_security('login') }}">Вход</a></p>
+      </footer>
+    </div>
+  </div>
+</section>
+{% endblock %}

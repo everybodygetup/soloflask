@@ -1,0 +1,22 @@
+{% extends 'base.j2' %}
+{% from 'macros/form.j2' import base_no_label, btn, render_field_errors %}
+{% set title = 'Подтверждение регистрации' %}
+{% block content %}
+<section class="jumbotron">
+  <div class="container">
+    <div class="jumbotron__wrapper">
+      <h3 class="main__title title title--h2">Отправить инструкции по подтверждению регистрации</h3>
+      <form class="form form--security" action="{{ url_for_security('send_confirmation') }}" method="post"
+        name="send_confirmation_form">
+        {{ send_confirmation_form.hidden_tag() }}
+        {{ render_field_errors(send_confirmation_form.csrf_token) }}
+        {{ base_no_label(send_confirmation_form.email) }}
+        {{ btn(send_confirmation_form.submit, value='Отправить повторно', class='button') }}
+      </form>
+      <footer class="main__footer">
+        <p class="main__text"><a class="link" href="{{ url_for_security('login') }}">Вход</a></p>
+      </footer>
+    </div>
+  </div>
+</section>
+{% endblock %}

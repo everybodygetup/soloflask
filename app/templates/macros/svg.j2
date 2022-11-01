@@ -1,0 +1,14 @@
+{% macro icon(class_name, icon_name, width=24, height=24) -%}
+  {#
+  Генерирует обертку с svg иконкой, взятую из спрайта
+
+  Parameters:
+  @param {string} class_name - Класс тега svg. Передается в кавычках.
+  @param {string} icon_name - Название иконки в спрайте. Передается в кавычках.
+  @param {number} width - Ширина изображения, по-умолчанию 24.
+  @param {number} height - Высота изображения, по-умолчанию 24.
+  #}
+  <svg class="{{ class_name }}" width="{{ width }}" height="{{ height }}">
+    <use href="{{ url_for_icon(icon_name) }}"></use>
+  </svg>
+{%- endmacro %}
