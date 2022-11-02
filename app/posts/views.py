@@ -1,6 +1,6 @@
-from flask import Blueprint,request,render_template,redirect
+from flask import Blueprint,request,render_template,redirect,url_for,flash
 from app.extensions import db
-from app.core.models import TnVed
+from app.posts.models import TnVed
 
 posts = Blueprint('posts', __name__, template_folder='templates')
 
@@ -24,20 +24,14 @@ def post_update(id):
 
 
     
-
-@posts.route('/posts/<int:id>/del')
-def post_delete(id):
+@posts.route('/posts/<int:id_post>/del')
+def post_delete(id_post):
     """Удаление из БД"""
-    ved_db = TnVed.query.get_or_404(id)
-
-    try:
-        db.session.delete(ved_db)
-        db.session.commit()
-        return redirect('/posts')
-    except:
-        return "Произошла ошибка"
-
-
+    ved_db = TnVed.query.get_or_404(id_post)
+    ved_db.delete()
+    flash('Код удален')
+    return redirect('/posts')
+    
 
 @posts.route('/posts')
 def post():
