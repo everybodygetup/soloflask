@@ -3,10 +3,7 @@ from extensions import db
 from flask_security import SQLAlchemyUserDatastore
 from flask_security.models.fsqla_v2 import FsModels, FsRoleMixin, FsUserMixin
 
-
-
 FsModels.set_db_info(db)
-
 
 
 class Role(db.Model, FsRoleMixin):
@@ -20,6 +17,7 @@ class User(db.Model, FsUserMixin):
     phone = db.Column(db.String(20))
 
 
+
 class Post(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     title = db.Column(db.String(140))
@@ -31,14 +29,5 @@ class Post(db.Model):
         return f"<Post {self.title}>"
 
 
-class TnVed(db.Model):
-    id = db.Column(db.Integer, primary_key=True)
-    title = db.Column(db.String(100), primary_key=False)
-    intro = db.Column(db.String(300), primary_key=False)
-    text = db.Column(db.Text, nullable=False)
-    date = db.Column(db.DateTime, default=datetime.utcnow)
-
-    def __repr__(self):
-        return '<TnWed %r>' % self.id
 
 user_datastore = SQLAlchemyUserDatastore(db, User, Role)
