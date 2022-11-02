@@ -1,5 +1,7 @@
 from flask import Blueprint,request,render_template,redirect,flash
 from app.extensions import db
+from app.posts.models import TnVed
+
 
 core = Blueprint('core', __name__, template_folder='templates')
 
