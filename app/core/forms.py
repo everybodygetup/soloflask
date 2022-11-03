@@ -3,6 +3,6 @@ from wtforms import StringField, PasswordField, BooleanField, SubmitField,TextAr
 from wtforms.validators import DataRequired
 
 
-class SpeciesForm(FlaskForm):
+class KodForm(FlaskForm):
     find = StringField('слово или код', validators=[DataRequired(message='Обязательное поле')])
     findButton = SubmitField('найти')
