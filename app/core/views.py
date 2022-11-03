@@ -14,7 +14,7 @@ def create_tables():
 def species():
     form = KodForm()
     if form.validate_on_submit():
-        kod_search = KodForm.query.filter(KodForm.name.like(f'%{form.find.data}%')).all()
+        kod_search = TnVed.query.filter(TnVed.title.like(f'%{form.find.data}%')).all()
         return render_template('index.j2', kod_search=kod_search, form=form)
     return render_template('index.j2', form=form)
 
