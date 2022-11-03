@@ -1,7 +1,7 @@
 from flask import Blueprint,request,render_template,redirect,flash
 from app.extensions import db
 from app.posts.models import TnVed
-from app.core.forms import SpeciesForm
+from app.core.forms import KodForm
 
 core = Blueprint('core', __name__, template_folder='templates')
 
@@ -12,10 +12,10 @@ def create_tables():
 
 @core.route('/', methods=['GET', 'POST'])
 def species():
-    form = SpeciesForm()
+    form = KodForm()
     if form.validate_on_submit():
-        species_search = SpeciesForm.query.filter(SpeciesForm.name.like(f'%{form.find.data}%')).all()
-        return render_template('index.j2', species_search=species_search, form=form)
+        kod_search = KodForm.query.filter(KodForm.name.like(f'%{form.find.data}%')).all()
+        return render_template('index.j2', kod_search=kod_search, form=form)
     return render_template('index.j2', form=form)
 
 
