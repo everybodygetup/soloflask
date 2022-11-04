@@ -31,4 +31,11 @@ class Config(object):
 
     SQLALCHEMY_TRACK_MODIFICATIONS = True
 
+    WTF_CSRF_ENABLED = True
+    WTF_CSRF_SECRET_KEY = "b4nds434nsdf654756vxv"
+    WTF_CSRF_SSL_STRICT = False
+
+    @staticmethod
+    def init_app(app):
+        pass
  

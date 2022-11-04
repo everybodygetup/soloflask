@@ -1,32 +1,29 @@
 from datetime import datetime
-from extensions import db
+from app.extensions import db
 from flask_security import SQLAlchemyUserDatastore
 from flask_security.models.fsqla_v2 import FsModels, FsRoleMixin, FsUserMixin
 
-FsModels.set_db_info(db)
 
-
-class Role(db.Model, FsRoleMixin):
-    pass
-
+roles_users = db.Table('roles_users',
+    db.Column('user_id', db.Integer, db.ForeignKey('user.id')),
+    db.Column('role_id', db.Integer, db.ForeignKey('role.id')))
 
 class User(db.Model, FsUserMixin):
-    posts = db.relationship("Post", backref="author", lazy="dynamic")
-    firstname = db.Column(db.String(255))
-    lastname = db.Column(db.String(255))
-    phone = db.Column(db.String(20))
-
-
-
-class Post(db.Model):
     id = db.Column(db.Integer, primary_key=True)
-    title = db.Column(db.String(140))
-    text = db.Column(db.Text)
-    timestamp = db.Column(db.DateTime, index=True, default=datetime.utcnow)
-    user_id = db.Column(db.Integer, db.ForeignKey("user.id"))
+    email = db.Column(db.String(100), unique=True)
+    password = db.Column(db.String(255))
+    active = db.Column(db.Boolean)
+    confirmed_at = db.Column(db.DateTime)
+    roles = db.relationship(
+        'Role', 
+        secondary=roles_users, 
+        backref=db.backref('users', lazy='dynamic')
+    )
 
-    def __repr__(self):
-        return f"<Post {self.title}>"
+class Role(db.Model, FsRoleMixin):
+    id = db.Column(db.Integer, primary_key=True)
+    name = db.Column(db.String(40))
+    description = db.Column(db.String(255))
 
 
 

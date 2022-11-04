@@ -9,9 +9,9 @@ core = Blueprint('core', __name__, template_folder='templates')
 def create_tables():
     db.create_all()
     
-
+@core.route('/index', methods=['GET', 'POST'])
 @core.route('/', methods=['GET', 'POST'])
-def species():
+def index():
     form = KodForm()
     if form.validate_on_submit():
         kod_search = TnVed.query.filter(TnVed.title.like(f'%{form.find.data}%')).all()
@@ -19,9 +19,9 @@ def species():
     return render_template('index.j2', form=form)
 
 
-@core.route('/')
-@core.route('/index')
-def index():
+#@core.route('/')
+#@core.route('/index')
+#def index():
     '''Главная страница'''
     return render_template('index.j2')
 
