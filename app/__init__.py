@@ -1,6 +1,6 @@
 from flask import Flask
 from config import Config
-from extensions import babel, db, executor, mail, migrate, security
+from app.extensions import babel, db, executor, mail, migrate, security
 from app.posts import posts
 from app.core import core
 from app.core.models import user_datastore
