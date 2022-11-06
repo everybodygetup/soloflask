@@ -1,6 +1,6 @@
 from flask import Blueprint,request,render_template,redirect,flash
 from app.extensions import db
-from app.posts.models import TnVed
+from app.posts.models import SpareParts
 from app.core.forms import KodForm
 
 core = Blueprint('core', __name__, template_folder='templates')
@@ -14,7 +14,7 @@ def create_tables():
 def index():
     form = KodForm()
     if form.validate_on_submit():
-        kod_search = TnVed.query.filter(TnVed.title.like(f'%{form.find.data}%')).all()
+        kod_search = SpareParts.query.filter(SpareParts.title.like(f'%{form.find.data}%')).all()
         return render_template('index.j2', kod_search=kod_search, form=form)
     return render_template('index.j2', form=form)
 
@@ -40,7 +40,7 @@ def ved():
         intro = request.form['intro']
         text = request.form['text']
 
-        ved_db = TnVed(title=title,intro=intro,text=text)
+        ved_db = SpareParts(title=title,intro=intro,text=text)
 
         try:
             db.session.add(ved_db)

@@ -6,7 +6,7 @@ from app.models import ModelMixin
 
 
 
-class TnVed(db.Model,ModelMixin):
+class SpareParts(db.Model,ModelMixin):
     id = db.Column(db.Integer, primary_key=True)
     title = db.Column(db.String(100), primary_key=False)
     intro = db.Column(db.String(300), primary_key=False)
