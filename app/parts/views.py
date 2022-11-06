@@ -1,10 +1,11 @@
-from flask import Blueprint,request,render_template,redirect,url_for,flash
+from flask import Blueprint, request, render_template, redirect, flash
 from app.extensions import db
 from app.parts.models import SpareParts
 
 parts = Blueprint('parts', __name__, template_folder='templates')
 
-@parts.route('/parts/<int:id>/update',methods=['POST','GET'])
+
+@parts.route('/parts/<int:id>/update', methods=['POST', 'GET'])
 def parts_update(id):
     """Редактировать запись"""
     ved_db = SpareParts.query.get(id)
@@ -18,12 +19,10 @@ def parts_update(id):
             return redirect('/parts')
         except:
             return "Произошла ошибка"
-    else:
-        
+    else:       
         return render_template('parts/parts_update.j2', ved_db=ved_db)
 
-
-    
+  
 @parts.route('/parts/<int:id_post>/del')
 def parts_delete(id_post):
     """Удаление из БД"""
@@ -37,17 +36,17 @@ def parts_delete(id_post):
 def part():
     """Показывает посты из БД ved/ved2"""
     ved_db = SpareParts.query.order_by(SpareParts.date.desc()).all()
-    return render_template('parts/parts.j2',ved_db=ved_db)
+    return render_template('parts/parts.j2', ved_db=ved_db)
 
 
 @parts.route('/parts/<int:id>')
 def parts_detail(id):
     """Обработка нужного url адреса"""
     ved_db = SpareParts.query.get(id)
-    return render_template('parts/parts_detail.j2',ved_db=ved_db)
+    return render_template('parts/parts_detail.j2', ved_db=ved_db)
 
 
-@parts.route('/ved',methods=['POST','GET'])
+@parts.route('/ved', methods=['POST', 'GET'])
 def ved():
     """Создание бд кодов только из модели напрямую"""
     if request.method == "POST":
@@ -55,7 +54,7 @@ def ved():
         intro = request.form['intro']
         text = request.form['text']
 
-        ved_db = SpareParts(title=title,intro=intro,text=text)
+        ved_db = SpareParts(title=title, intro=intro, text=text)
 
         try:
             db.session.add(ved_db)
