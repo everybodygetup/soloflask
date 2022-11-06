@@ -1,5 +1,8 @@
+import os
+
+
 from flask import Flask
-from config import Config
+from config import config
 from app.extensions import babel, db, executor, mail, migrate, security
 from app.parts import parts
 from app.core import core
@@ -7,7 +10,7 @@ from app.core.models import user_datastore
 
 
 app = Flask(__name__)
-app.config.from_object(Config)
+app.config.from_object(config[os.getenv("FLASK_ENV", "production")])
 
 mail.init_app(app)
 babel.init_app(app)
