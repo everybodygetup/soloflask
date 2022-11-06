@@ -4,7 +4,7 @@ from app.parts.models import SpareParts
 
 parts = Blueprint('parts', __name__, template_folder='templates')
 
-@parts.route('/part/<int:id>/update',methods=['POST','GET'])
+@parts.route('/parts/<int:id>/update',methods=['POST','GET'])
 def parts_update(id):
     """Редактировать запись"""
     ved_db = SpareParts.query.get(id)
@@ -24,7 +24,7 @@ def parts_update(id):
 
 
     
-@parts.route('/part/<int:id_post>/del')
+@parts.route('/parts/<int:id_post>/del')
 def parts_delete(id_post):
     """Удаление из БД"""
     ved_db = SpareParts.query.get_or_404(id_post)
@@ -33,16 +33,16 @@ def parts_delete(id_post):
     return redirect('/parts')
     
 
-@parts.route('/part')
+@parts.route('/parts')
 def part():
     """Показывает посты из БД ved/ved2"""
     ved_db = SpareParts.query.order_by(SpareParts.date.desc()).all()
     return render_template('parts/parts.j2',ved_db=ved_db)
 
 
-@parts.route('/part/<int:id>')
+@parts.route('/parts/<int:id>')
 def parts_detail(id):
     """Обработка нужного url адреса"""
     ved_db = SpareParts.query.get(id)
-    return render_template('part/parts_detail.j2',ved_db=ved_db)
+    return render_template('parts/parts_detail.j2',ved_db=ved_db)
 
