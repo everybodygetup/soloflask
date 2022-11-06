@@ -46,3 +46,23 @@ def parts_detail(id):
     ved_db = SpareParts.query.get(id)
     return render_template('parts/parts_detail.j2',ved_db=ved_db)
 
+
+@parts.route('/ved',methods=['POST','GET'])
+def ved():
+    """Создание бд кодов только из модели напрямую"""
+    if request.method == "POST":
+        title = request.form['title']
+        intro = request.form['intro']
+        text = request.form['text']
+
+        ved_db = SpareParts(title=title,intro=intro,text=text)
+
+        try:
+            db.session.add(ved_db)
+            db.session.commit()
+            flash("Код ТНВЭД добавлен", "success")
+            return redirect('/parts')
+        except:
+            return "Произошла ошибка"
+    return render_template('ved.j2')
+

@@ -26,21 +26,3 @@ def about():
     return render_template('about.j2')
 
 
-@core.route('/ved',methods=['POST','GET'])
-def ved():
-    """Создание бд кодов только из модели напрямую"""
-    if request.method == "POST":
-        title = request.form['title']
-        intro = request.form['intro']
-        text = request.form['text']
-
-        ved_db = SpareParts(title=title,intro=intro,text=text)
-
-        try:
-            db.session.add(ved_db)
-            db.session.commit()
-            flash("Код ТНВЭД добавлен", "success")
-            return redirect('/posts')
-        except:
-            return "Произошла ошибка"
-    return render_template('ved.j2')
