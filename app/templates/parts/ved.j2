@@ -1,0 +1,12 @@
+{% extends "base.j2" %}
+{% block content %}
+<h1>Введи код ТН ВЭД</h1>
+<div class="container mt-5">
+    <form method="post">
+        <input type="text" name="title" id="title" class="form-control" placeholder="Введите заголовок"><br>
+        <textarea name="intro" id="intro" class="form-control" placeholder="Введите код"></textarea><br>
+        <textarea name="text" id="text" class="form-control" placeholder="Ведите текст"></textarea><br>
+        <input type="submit" class="btn btn-success" value="Отправить">
+    </form>
+</div>
+{% endblock %}
