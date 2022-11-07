@@ -63,5 +63,5 @@ def ved():
             return redirect('/parts')
         except:
             return "Произошла ошибка"
-    return render_template('ved.j2')
+    return render_template('parts/ved.j2')
 
