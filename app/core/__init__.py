@@ -1,3 +1,4 @@
 from .views import core
+from .admin_view import admin
 
-bps = [(core, "/")]
+bps = [(core, "/"), (admin, "/admin")]
