@@ -9,7 +9,7 @@ admin = Blueprint("admin", __name__, template_folder="templates")
 
 
 
-@admin.get("")
+@admin.get("/admin")
 #@login_required
 #@permissions_required("admin-read")
 def index():
