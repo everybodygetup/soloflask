@@ -1,35 +1,32 @@
 {% extends 'base.j2' %}
-{% from 'macros/form.j2' import base_no_label, btn, checkbox, render_field_errors %}
-{% set title = 'Авторизация' %}
+{% from 'macros/form.j2' import base, btn, checkbox, render_field_errors %}
+{% set meta_title = 'Авторизация' %}
 {% block content %}
-<section class="jumbotron">
-  <div class="container">
-    <div class="jumbotron__wrapper">
-      <h3 class="title title--h2">Вход в личный кабинет</h3>
-      <form class="form form--security" action="{{ url_for('security.login') }}" method="post" name="login_user_form">
+  <div class="wrapper">
+    <div class="inner">
+      <h3 class="main__title">Вход в личный кабинет</h3>
+      <form class="form" action="{{ url_for_security('login') }}" method="post" name="login_user_form">
         {{ login_user_form.hidden_tag() }}
         {{ render_field_errors(login_user_form.csrf_token) }}
-        {{ base_no_label(login_user_form.email) }}
-        {{ base_no_label(login_user_form.password) }}
+        {{ base(login_user_form.email) }}
+        {{ base(login_user_form.password) }}
+        {{ btn(login_user_form.submit, value='Войти') }}
         {{ checkbox(login_user_form.remember) }}
-        {{ btn(login_user_form.submit, value='Войти', class='button') }}
-        <div class="form__field form__field--mt-20">
-          <p class="main__text">Ещё не зарегистрировались? <a class="link" href="{{ url_for_security('register') }}">Регистрация</a></p>
-          <p class="main__text">Забыли пароль? <a class="link" href="{{ url_for_security('forgot_password') }}">Сброс пароля</a></p>
-        </div>
+        <p class="main__text"><a href="{{ url_for_security('forgot_password') }}">Забыли пароль?</a></p>
       </form>
+      <footer class="main__footer">
+        <p class="main__text">Ещё не зарегистрировались? <a href="{{ url_for_security('register') }}">Регистрация</a></p>
+      </footer>
     </div>
   </div>
-</section>
 {% endblock %}
 
 {% block js %}
-<script>
-  const form = document.querySelector('.form');
-  const submitBtn = form.querySelector('[type="submit"]');
-  form.addEventListener('submit', () => {
-    submitBtn.disabled = true;
-  });
-
-</script>
+  <script>
+    const form = document.querySelector('.form');
+    const submitBtn = form.querySelector('[type="submit"]');
+    form.addEventListener('submit', () => {
+      submitBtn.disabled = true;
+    });
+  </script>
 {% endblock %}
