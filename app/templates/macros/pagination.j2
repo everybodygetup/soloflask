@@ -1,0 +1,32 @@
+{% macro paginate(pagination, endpoint, url, params=None, sort_by=None) %}
+  <div class="pagination">
+    {% if pagination.prev %}
+      <a class="pagination__prev" href="{{ url_for(endpoint, url=url, page=pagination.prev, sort_by=sort_by) }}{% for f in params -%}
+        {% for k in f %}&amp;{{ k }}={{ f[k] }}{% endfor %}
+      {%- endfor %}">Назад</a>
+    {% endif %}
+
+    {% set pages = pagination.iter_pages|list %}
+    {% if pages|length > 1 %}
+      {% for p in pages %}
+        {% if p %}
+          {% if p != pagination.page %}
+            <a class="pagination__link" href="{{ url_for(endpoint, url=url, page=p, sort_by=sort_by) }}{% for f in params -%}
+              {% for k in f %}&amp;{{ k }}={{ f[k] }}{% endfor %}
+            {%- endfor %}">{{ p }}</a>
+          {% else %}
+            <a class="pagination__link pagination__link--active">{{ p }}</a>
+          {% endif %}
+        {% else %}
+          <span class="pagination__dots">&hellip;</span>
+        {% endif %}
+      {% endfor %}
+    {% endif %}
+
+    {% if pagination.next %}
+      <a class="pagination__next" href="{{ url_for(endpoint, url=url, page=pagination.next, sort_by=sort_by) }}{% for f in params -%}
+        {% for k in f %}&amp;{{ k }}={{ f[k] }}{% endfor %}
+      {%- endfor %}">Далее</a>
+    {% endif %}
+  </div>
+{% endmacro %}

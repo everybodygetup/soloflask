@@ -1,0 +1,80 @@
+{% from 'macros/picture.j2' import picture %}
+{% macro gallery(images) %}
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/Swiper/6.8.4/swiper-bundle.min.css">
+
+<div class="gallery">
+  <div class="swiper-container gallery-slider">
+    <div class="swiper-wrapper">
+      {% for img in images %}
+        <div class="swiper-slide">
+          {{ picture(
+            class_name='gallery__image',
+            file_name=img.filename,
+            alt=img.alt,
+            width=1350,
+            height=850,
+            bp_tablet=834,
+            width_tablet=400,
+            height_tablet=267,
+            bp_desktop=1440,
+            width_desktop=1350,
+            height_desktop=850
+          ) }}
+        </div>
+      {% endfor %}
+    </div>
+    <div class="swiper-button-prev"></div>
+    <div class="swiper-button-next"></div>
+  </div>
+
+  <div class="swiper-container gallery-thumbs">
+    <div class="swiper-wrapper">
+      {% for img in images %}
+        <div class="swiper-slide">
+          {{ picture(
+            class_name='gallery__image',
+            file_name=img.filename,
+            alt=img.alt,
+            width=220,
+            height=100,
+            bp_tablet=834,
+            width_tablet=220,
+            height_tablet=100,
+            bp_desktop=1440,
+            width_desktop=220,
+            height_desktop=100
+          ) }}
+        </div>
+      {% endfor %}
+    </div>
+  </div>
+</div>
+
+
+<script src="{{ url_for('static', filename='js/swiper-bundle.min.js') }}"></script>
+
+<script>
+  // Swiper
+  var slider = new Swiper('.gallery-slider', {
+    slidesPerView: 1,
+    centeredSlides: true,
+    loop: true,
+    loopedSlides: 6,
+    navigation: {
+      nextEl: '.swiper-button-next',
+      prevEl: '.swiper-button-prev',
+    },
+  });
+
+  var thumbs = new Swiper('.gallery-thumbs', {
+    slidesPerView: 'auto',
+    spaceBetween: 10,
+    centeredSlides: true,
+    loop: true,
+    slideToClickedSlide: true,
+  });
+
+  slider.controller.control = thumbs;
+  thumbs.controller.control = slider;
+</script>
+{% endmacro %}

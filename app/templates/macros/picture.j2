@@ -1,0 +1,98 @@
+{% macro picture_dev(class_name, alt, width, height, file_name, file_name2x=None, type='jpeg', responsive=None, webp=False, webp2x=False) -%}
+  {#
+  Генерирует picture обертку с img картинкой для разных разрешений экрана и ретиной.
+
+  Parameters:
+  :param {string} class_name - Класс тега img. Передается в кавычках.
+  :param {string} file_name - Путь к файлу. Передается в кавычках.
+  :param {boolean|string} file_name2x - Если необходима ретина, то передается путь к файл двойной плотности
+  :param {string} alt - Описание изображения в теге img. Передается в кавычках.
+  :param {number} width - Ширина изображения.
+  :param {number} height - Высота изображения.
+  :param {string} type - Тип изображения, по-умолчанию jpeg
+  :param {boolean|array} responsive - Если нужно медиа с разными разрешениями, то передается массив объектов с разрешениями и сопоставлениями файлов, если нет - None
+  :param {boolean|string} webp — Если нужно ещё webp формат, то передается путь к этому файлу
+  :param {boolean|string} webp2x — Если нужно ещё webp формат двойной плотности, то передается путь к этому файлу
+  #}
+  <picture>
+    {% if responsive %}
+      {% for image in responsive %}
+        {{ source(image.min_width, image.file_name, image.file_name2x, type, image.webp, image.webp2x) }}
+      {% endfor %}
+    {% endif %}
+    {% if webp %}
+      <source type="image/webp" srcset="{% if webp2x %}{{ webp2x }} 2x, {{ webp }} 1x{% else %}{{ webp }}{% endif %}">
+    {% endif %}
+    <img class="{{ class_name }}"{% if file_name2x %} srcset="{{ file_name2x }} 2x, {{ file_name }} 1x"{% endif %} src="{{ file_name }}" width="{{ width }}" height="{{ height }}" alt="{{ alt }}">
+  </picture>
+{%- endmacro %}
+
+{% macro source(min_width, file_name, file_name2x, type, webp, webp2x) -%}
+  {% if webp %}
+    <source type="image/webp" media="(min-width: {{ min_width }}px)" srcset="{% if webp2x %}{{ webp2x }} 2x, {{ webp }} 1x{% else %}{{ webp }}{% endif %}">
+  {% endif %}
+  <source type="image/{{ type }}" media="(min-width: {{ min_width }}px)" srcset="{% if file_name2x %}{{ file_name2x }} 2x, {{ file_name }} 1x{% else %}{{ file_name }}{% endif %}">
+{%- endmacro %}
+
+{% macro picture(class_name, file_name, alt, width, height, bp_tablet, width_tablet, height_tablet, bp_desktop, width_desktop, height_desktop, fill=False) -%}
+  {#
+  Основной макрос, генеринует picture обертку с img картинкой для разных разрешений экрана и ретиной.
+
+  :param {string} class_name - Класс тега img.
+  :param {string} file_name - Путь к файлу, автоматически генерирует полный путь.
+  :param {string} alt - Описание изображения в теге img.
+  :param {number} width - Ширина изображения для мобильного.
+  :param {number} height - Высота изображения для мобильного.
+  :param {number} bp_tablet - Ширина вьюпорта для переключения на планшетную версию.
+  :param {number} width_tablet - Ширина изображения для планшета.
+  :param {number} height_tablet - Высота изображения для планшета.
+  :param {number} bp_desktop - Ширина вьюпорта для переключения на десктопную версию.
+  :param {number} width_desktop - Ширина изображения для десктопа.
+  :param {number} height_desktop - Высота изображения для десктопа.
+
+  Пример вызова:
+    {{ picture(
+      class_name='image-class',
+      file_name='products/%s' % product.image,
+      alt='Изображение для товара %s' % product.title,
+      width=200,
+      height=150,
+      bp_tablet=834,
+      width_tablet=300,
+      height_tablet=200,
+      bp_desktop=1440,
+      width_desktop=400,
+      height_desktop=300
+    ) }}
+  #}
+  {%- set width2x = width * 2 %}
+  {%- set height2x = height * 2 %}
+  {%- set width_tablet2x = width_tablet * 2 %}
+  {%- set height_tablet2x = height_tablet * 2 %}
+  {%- set width_desktop2x = width_desktop * 2 %}
+  {%- set height_desktop2x = height_desktop * 2 %}
+  {%- set responsive = [{
+      'min_width': bp_desktop,
+      'file_name': url_for_resize(file_name, width_desktop, height_desktop, fill=fill),
+      'file_name2x': url_for_resize(file_name, width_desktop2x, height_desktop2x, fill=fill),
+      'webp': url_for_resize(file_name, width_desktop, height_desktop, 'webp', fill=fill),
+      'webp2x': url_for_resize(file_name, width_desktop2x, height_desktop2x, 'webp', fill=fill),
+    }, {
+      'min_width': bp_tablet,
+      'file_name': url_for_resize(file_name, width_tablet, height_tablet, fill=fill),
+      'file_name2x': url_for_resize(file_name, width_tablet2x, height_tablet2x, fill=fill),
+      'webp': url_for_resize(file_name, width_tablet, height_tablet, 'webp', fill=fill),
+      'webp2x': url_for_resize(file_name, width_tablet2x, height_tablet2x, 'webp', fill=fill),
+    }] -%}
+  {{ picture_dev(
+    class_name=class_name,
+    file_name=url_for_resize(file_name, width, height, fill=fill),
+    file_name2x=url_for_resize(file_name, width2x, height2x, fill=fill),
+    alt=alt,
+    width=width,
+    height=height,
+    responsive=responsive,
+    webp=url_for_resize(file_name, width, height, 'webp', fill=fill),
+    webp2x=url_for_resize(file_name, width2x, height2x, 'webp', fill=fill)
+  ) }}
+{%- endmacro %}

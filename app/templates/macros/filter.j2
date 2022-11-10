@@ -1,0 +1,215 @@
+{%- from 'macros/svg.j2' import icon -%}
+
+{% macro filter(categories, category_id=None, parent_category_id=None, subnav=True, show_filter=True, index=False ) -%}
+<header class="filter" style="flex-grow: 1;">
+  <div class="filter__nav filter__nav--top">
+    <ol class="filter__list" vocab="https://schema.org/" typeof="BreadcrumbList">
+      {# <li class="filter__item" property="itemListElement" typeof="ListItem">#}
+        {# <a class="filter__link{% if not category_id %} filter__link--active{% endif %}"
+          href="{{ url_for('catalog.category') }}" property="item" typeof="WebPage">#}
+          {# <span property="name">Все</span>#}
+          {# </a>#}
+        {#
+        <meta property="position" content="1">#}
+        {#
+      </li>#}
+      {% for category in categories %}
+      {% if category.deep == 0 %}
+      <li class="filter__item" property="itemListElement" typeof="ListItem">
+        <a class="filter__link{% if category.id in [category_id, parent_category_id] %} filter__link--active{% endif %}"
+          href="{{ url_for('catalog.category', url=category.alias) }}" property="item" typeof="WebPage">
+          <span property="name">{{ category.title }}</span>
+        </a>
+
+
+
+        <meta property="position" content="{{ loop.index + 1 }}">
+      </li>
+      {% endif %}
+      {% endfor %}
+    </ol>
+    <button class="filter__toggle" type="button">
+      <span class="filter__toggle-item"></span>
+    </button>
+    <ul class="filter__list-hidden"></ul>
+
+    {# Список с чекбоксами 
+    {% for category in categories %}
+    {% if category.deep == 0 %}
+    <div class="filter-dropdown" id="filter_dropdown_{{ loop.index + 1 }}">
+      <p class="filter-dropdown__title">{{ category.title }}</p>
+
+
+      <div class="filter-dropdown__box">
+        <!-- group -->
+        <div class="filter-dropdown-group">
+          <p class="filter-dropdown-group__title">Цвет</p>
+          <label class="filter-dropdown-group__label">
+            <input type="checkbox" class="filter-dropdown-group__checkbox">
+            Белый
+          </label>
+          <label class="filter-dropdown-group__label">
+            <input type="checkbox" class="filter-dropdown-group__checkbox">
+            Серый
+          </label>
+        </div>
+        <!-- ./group -->
+
+        <!-- group -->
+        <div class="filter-dropdown-group">
+          <p class="filter-dropdown-group__title">Дизайн</p>
+          <label class="filter-dropdown-group__label">
+            <input type="checkbox" class="filter-dropdown-group__checkbox">
+            Под дерево
+          </label>
+          <label class="filter-dropdown-group__label">
+            <input type="checkbox" class="filter-dropdown-group__checkbox">
+            Под мрамор
+          </label>
+          <label class="filter-dropdown-group__label">
+            <input type="checkbox" class="filter-dropdown-group__checkbox">
+            Под камень
+          </label>
+        </div>
+        <!-- ./group -->
+
+        <!-- group -->
+        <div class="filter-dropdown-group">
+          <p class="filter-dropdown-group__title">Назначение</p>
+          <label class="filter-dropdown-group__label">
+            <input type="checkbox" class="filter-dropdown-group__checkbox">
+            Для пола
+          </label>
+          <label class="filter-dropdown-group__label">
+            <input type="checkbox" class="filter-dropdown-group__checkbox">
+            Для стен
+          </label>
+          <label class="filter-dropdown-group__label">
+            <input type="checkbox" class="filter-dropdown-group__checkbox">
+            Для улицы
+          </label>
+        </div>
+        <!-- ./group -->
+
+        <!-- group -->
+        <div class="filter-dropdown-group">
+          <p class="filter-dropdown-group__title">Размер</p>
+          <label class="filter-dropdown-group__label">
+            <input type="checkbox" class="filter-dropdown-group__checkbox">
+            30x30 см
+          </label>
+          <label class="filter-dropdown-group__label">
+            <input type="checkbox" class="filter-dropdown-group__checkbox">
+            30x30 см
+          </label>
+          <label class="filter-dropdown-group__label">
+            <input type="checkbox" class="filter-dropdown-group__checkbox">
+            30x30 см
+          </label>
+        </div>
+        <!-- ./group -->
+      </div>
+      
+      <button class="filter-dropdown__btn">Подобрать</button>
+    </div>
+    {% endif %}
+    {% endfor %}
+    #}
+  </div>
+  {% if subnav %}
+  <div class="filter__bottom{% if not show_filter %} filter__bottom--full-width{% endif %}">
+    {% for category in categories %}
+    {% if category.sub and (category.id in [category_id, parent_category_id]) %}
+    <div class="filter__nav filter__nav--sub">
+      <ol class="filter__list" vocab="https://schema.org/" typeof="BreadcrumbList">
+        {% for category_sub in category.sub %}
+        <li class="filter__item" property="itemListElement" typeof="ListItem">
+          <a class="filter__link{% if category_sub.id == category_id %} filter__link--active{% endif %}"
+            href="{{ url_for('catalog.category', url='%s/%s' % (category.alias, category_sub.alias)) }}" property="item"
+            typeof="WebPage">
+            <span property="name">{{ category_sub.title }}</span>
+          </a>
+          <meta property="position" content="{{ loop.index }}">
+        </li>
+        {% endfor %}
+      </ol>
+      <button class="filter__toggle" type="button">
+        <span class="filter__toggle-item"></span>
+      </button>
+      <ul class="filter__list-hidden"></ul>
+    </div>
+    {% endif %}
+    {% endfor %}
+    {% if show_filter %}
+    <button class="filter__btn">
+      {{ icon('filter__btn-icon', 'filter', 20, 20) }}
+      <span class="filter__btn-badge">3</span>
+      фильтр
+    </button>
+    {% endif %}
+  </div>
+  {% endif %}
+</header>
+
+{% block js %}
+<script src="{{ url_for('static', filename='js/filter.min.js') }}"></script>
+<script src="{{ url_for('static', filename='js/filterShowDropdown.min.js') }}"></script>
+
+<script>
+  const filter = document.querySelector('.filter');
+  const filterLinks = filter.querySelectorAll('.filter__item');
+  const filterDropdowns = filter.querySelectorAll('.filter-dropdown')
+
+  // Общий слушатель мыши для скрытия выпадающего списка + throttle для уменьшения нагрузки
+  let enableCall = true;
+  document.body.addEventListener('mousemove', e => {
+    if (!enableCall) return;
+
+    enableCall = false;
+    if (!e.target.closest('.filter-dropdown') && !e.target.closest('.filter__item')) {
+      removeClassFromDropdowns();
+    }
+    setTimeout(() => enableCall = true, 300);
+  });
+  let enableMobileCall = true;
+  document.body.addEventListener('touchmove', e => {
+    if (!enableMobileCall) return;
+
+    enableMobileCall = false;
+    if (!e.target.closest('.filter-dropdown') && !e.target.closest('.filter__item')) {
+      removeClassFromDropdowns();
+    }
+    setTimeout(() => enableMobileCall = true, 300);
+  });
+
+  // Перебираем все ссылки и вешаем слушатели
+  filterLinks.forEach((link, idx) => {
+    link.addEventListener('mouseover', addClassToDropdown);
+    link.addEventListener('touchmove', addClassToDropdown);
+    link.dataset.id = idx + 2; // + 2 потому что в шаблоне все элементы начинаются с 2
+  });
+
+  // Добавляем класс к выпадающему списку если навелись на ссылку
+  function addClassToDropdown(e) {
+    const currentItem = e.target.closest('.filter__item');
+
+    if (currentItem && currentItem.dataset.id) {
+      const dropdownItem = document.querySelector(`#filter_dropdown_${currentItem.dataset.id}`);
+
+      // Убираем со всех
+      removeClassFromDropdowns()
+
+      // Добавляем нужному
+      dropdownItem.classList.add('active');
+    }
+  }
+
+  // убираем классы со всех
+  function removeClassFromDropdowns() {
+    filterDropdowns.forEach(dropdown => {
+      dropdown.classList.remove('active');
+    })
+  }
+</script>
+{% endblock %}
+{% endmacro %}

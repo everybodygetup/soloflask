@@ -1,3 +1,13 @@
+{% macro render_input(field) %}
+  <label>
+    {{ field.label.text }}
+    {{ field(size=32, placeholder=field.label.text) }}
+  </label>
+  {% for error in field.errors %}
+    <span style="color: red;">{{ error }}</span>
+  {% endfor %}
+{% endmacro %}
+
 {% macro errors(errors, bem_block='form') -%}
   {% if errors %}
     <ul class="{{ bem_block }}__errors">
@@ -9,22 +19,15 @@
 {%- endmacro %}
 
 {% macro base(field, bem_block='form', floating_label=True) -%}
-  <div class="{{ bem_block }}__field{% if floating_label %} {{ bem_block }}__field--floating{% endif %}{% if field.errors %} form__field--error{% endif %}">
+  <div class="{{ bem_block }}__control{% if floating_label %} {{ bem_block }}__control--floating{% endif %}{% if field.errors %} form__control--error{% endif %}">
     {{ field(class='%s__text' % bem_block, placeholder=field.label.text, **kwargs) }}
     {{ field.label(class='%s__label' % bem_block) }}
     {{ errors(field.errors) }}
   </div>
 {%- endmacro %}
 
-{% macro base_no_label(field, bem_block='form', floating_label=True) -%}
-  <div class="{{ bem_block }}__field{% if floating_label %} {{ bem_block }}__field--floating{% endif %}{% if field.errors %} form__field--error{% endif %}">
-    {{ field(class='%s__text' % bem_block, placeholder=field.label.text, **kwargs) }}
-    {{ errors(field.errors) }}
-  </div>
-{%- endmacro %}
-
 {% macro checkbox(field, bem_block='form') -%}
-  <div class="{{ bem_block }}__field {{ bem_block }}__field--checkbox{% if field.errors %} {{ bem_block }}__field--error{% endif %}">
+  <div class="{{ bem_block }}__control {{ bem_block }}__control--checkbox{% if field.errors %} {{ bem_block }}__control--error{% endif %}">
     {{ field(class='%s__checkbox' % bem_block) }}
     {{ field.label(class='%s__label' % bem_block, **kwargs) }}
     {{ errors(field.errors) }}
@@ -32,7 +35,7 @@
 {%- endmacro %}
 
 {% macro radio(field, bem_block='form') -%}
-  <div class="{{ bem_block }}__field {{ bem_block }}__field--radio{% if field.errors %} {{ bem_block }}__field--error{% endif %}">
+  <div class="{{ bem_block }}__control {{ bem_block }}__control--radio{% if field.errors %} {{ bem_block }}__control--error{% endif %}">
     {{ field(class='%s__radio' % bem_block) }}
     {{ field.label(class='%s__label' % bem_block, **kwargs) }}
     {{ errors(field.errors) }}
