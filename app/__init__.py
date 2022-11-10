@@ -4,6 +4,7 @@ import os
 from flask import Flask
 from config import config
 from app.extensions import babel, db, executor, mail, migrate, security
+from app.email import SecMailUtil
 from app.parts import parts
 from app.core import core
 from app.core.models import user_datastore
@@ -17,7 +18,7 @@ babel.init_app(app)
 executor.init_app(app)
 db.init_app(app)
 migrate.init_app(app, db)
-security.init_app(app, user_datastore)
+security.init_app(app, user_datastore, mail_util_cls=SecMailUtil)
 
 
 app.register_blueprint(parts)
