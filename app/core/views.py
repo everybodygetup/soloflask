@@ -1,4 +1,4 @@
-from flask import Blueprint, request, render_template, redirect, flash
+from flask import Blueprint, request, render_template, redirect, flash, g
 from app.extensions import db
 from app.parts.models import SpareParts
 from app.core.forms import KodForm
@@ -26,3 +26,7 @@ def about():
     return render_template('about.j2')
 
 
+@core.route('/lk')
+def lk():
+    g.page_title = 'Личный кабинет'
+    return render_template('lk/index.j2')
