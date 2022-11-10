@@ -1,0 +1,17 @@
+{% extends "base.j2" %}
+
+{% block content %}
+  <section id="one" class="wrapper">
+    {{ super() }}
+    <div class="inner">
+      <h3>Пользователь</h3>
+      <ul>
+        <li><strong>Email</strong>: {{ current_user.email }}</li>
+        <li><strong>Дата регистрации</strong>: {{ current_user.create_datetime }}</li>
+        <li><strong>Дата активации</strong>: {{ current_user.confirmed_at }}</li>
+        <li><strong>Дата изменения</strong>: {{ current_user.update_datetime }}</li>
+        <li><strong>Роли пользователя</strong> ({{ current_user.roles | count }}): {% for role in current_user.roles %}{{ role.name }}{% if not loop.last %}, {% endif %}{% endfor %}</li>
+      </ul>
+    </div>
+  </section>
+{% endblock %}
