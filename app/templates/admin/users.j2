@@ -1,0 +1,36 @@
+{% extends "base.j2" %}
+
+{% block content %}
+  <section id="one" class="wrapper style2 special">
+    {{ super() }}
+    <div class="inner">
+      <div class="table-wrapper">
+        <table class="alt">
+        <thead>
+          <tr>
+            <th>ID</th><th>Email</th><th>Имя пользователя</th><th>Роли</th><th>Дата подтверждения</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for user in users %}
+            <tr>
+              <td>{{ user.id }}</td>
+              <td>{{ user.email }}</td>
+              <td><i class="icon solid fa-user"></i> {{ user.username }}</td>
+              <td>
+                [
+                {% for role in user.roles %}
+                  {{ role.name }}
+                {% endfor %}
+                ]
+                <a href="{{ url_for('admin_user_roles', user_id=user.id) }}">изменить</a>
+              </td>
+              <td>{{ user.confirmed_at }}</td>
+            </tr>
+          {% endfor %}
+        </tbody>
+        </table>
+      </div>
+    </div>
+  </section>
+{% endblock %}
