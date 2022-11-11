@@ -1,20 +1,15 @@
-{% extends "base.j2" %} {% block content %}
-<section id="one" class="wrapper style2 special">
-  <header class="major">
-    <h2>Админка</h2>
-  </header>
-  <ul class="icons major">
-    <li>
-      <a href="#" class="icon solid fa-users"
-        ><span class="label">Пользователи</span></a
-      >
-    </li>
-    <li>
-      <span class="icon solid fa-sync"><span class="label">Process</span></span>
-    </li>
-    <li>
-      <span class="icon solid fa-cloud"><span class="label">Upload</span></span>
-    </li>
-  </ul>
-</section>
+{% extends 'admin_base.j2' %}
+
+{% block content %}
+  <div class="container">
+    <h2>Главная страница админки</h2>
+    <ul class="icons major">
+      <li><a href="{{ url_for('admin.index') }}">Главная</a></li>
+      {# <li><a href="{{ url_for('admin_news.index') }}">Новости</a></li> #}
+      <li><a href="{{ url_for('admin.users') }}">Пользователи</a></li>
+      {# <li><a href="{{ url_for('admin_feedback.index') }}">Отзывы</a></li> #}
+      {# <li><a href="{{ url_for('admin_page.index') }}">Страницы</a></li> #}
+      {# <li><a href="{{ url_for('admin_contacts.index') }}">Контакты</a></li> #}
+    </ul>
+  </div>
 {% endblock %}
