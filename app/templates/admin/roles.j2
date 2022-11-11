@@ -1,0 +1,19 @@
+{% extends 'admin_base.j2' %}
+
+{% block content %}
+  <div class="container">
+    <h2>Изменение ролей для пользователя {{ user.email }}</h2>
+    <p>
+      Доступные:<br>
+      {% for role in roles %}
+        <a href="{{ url_for('admin.user_role_add', user_id=user.id, role_id=role.id) }}">{{ role.name }}</a>
+      <br>
+      {% endfor %}
+
+      <br>У пользователя:<br>
+      {% for role in user.roles %}
+        {{ role.name }}<br>
+      {% endfor %}
+    </p>
+  </div>
+{% endblock %}
