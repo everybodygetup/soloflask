@@ -8,7 +8,6 @@ from app.extensions import db
 admin = Blueprint("admin", __name__, template_folder="templates")
 
 
-
 @admin.get("/admin")
 #login_required
 #permissions_required("admin-read")
