@@ -9,15 +9,15 @@ admin = Blueprint("admin", __name__, template_folder="templates")
 
 
 @admin.get("/admin")
-#login_required
-#permissions_required("admin-read")
+@login_required
+#@permissions_required("admin-read")
 def index():
     """Главная страница админки."""
     return render_template("admin/index.j2")
 
 
 @admin.get("/users")
-#roles_required("admin")
+#@roles_required("admin")
 def users():
     """Показ всех пользователей сайта."""
     user_list_db = User.query.all()
@@ -25,7 +25,7 @@ def users():
 
 
 @admin.get("/user/<int:user_id>/roles")
-#roles_required("admin")
+#@roles_required("admin")
 def user_roles(user_id):
     """Показываем роли для конкретного пользователя."""
     user_db = User.query.get_or_404(user_id)
@@ -34,7 +34,7 @@ def user_roles(user_id):
 
 
 @admin.get("/user/<int:user_id>/<int:role_id>/add")
-#roles_required("admin")
+#@roles_required("admin")
 def user_role_add(user_id, role_id):
     """Добавление роли пользователю."""
     user_db = User.query.get_or_404(user_id)
