@@ -25,7 +25,6 @@ class User(db.Model, FsUserMixin):
 
 class UserSubmit(db.Model, ModelMixin):
     """Таблица заполненных форм сайта."""
-
     id = db.Column(db.Integer, primary_key=True)
     fist_name = db.Column(db.String(64), index=True)
     last_name = db.Column(db.String(64), index=True)
