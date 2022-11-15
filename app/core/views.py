@@ -1,5 +1,5 @@
 from flask import Blueprint, request, render_template, redirect, flash, g
-from flask_security import current_user
+from flask_security import current_user, login_required
 from app.extensions import db
 from app.parts.models import SpareParts
 from app.core.models import UserSubmit
@@ -24,7 +24,8 @@ def index():
     return render_template('index.j2', form=form)
 
 
-@core.route('/about')
+@core.route('/about', methods=['GET', 'POST'])
+#@login_required
 def about():
     """Главная страница сайта."""
     feedback_form = FeedbackForm(obj=request.form)
@@ -38,7 +39,7 @@ def about():
             user_id=current_user.id,
         )
         core_db.save()
-    
+        return render_template('index.j2', form=feedback_form)
     return render_template('about.j2', form=feedback_form)
 
 
