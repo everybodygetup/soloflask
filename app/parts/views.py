@@ -1,4 +1,5 @@
 from flask import Blueprint, request, render_template, redirect, flash
+from flask_security import roles_required
 from app.extensions import db
 from app.parts.models import SpareParts
 
@@ -33,6 +34,7 @@ def parts_delete(id_post):
     
 
 @parts.route('/parts')
+@roles_required("admin")
 def part():
     """Показывает посты из БД ved/ved2"""
     ved_db = SpareParts.query.order_by(SpareParts.date.desc()).all()
