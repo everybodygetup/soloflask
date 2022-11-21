@@ -76,7 +76,7 @@
               {% for role in current_user.roles %}
                 {% if role.name == 'admin' %}
                   <li class="header-nav__item">
-                    <a class="header-nav__link link" href="{{ url_for('admin.index') }}">Админка</a>
+                    <a class="header-nav__link link" href="{{ url_for('admin.index') }}">Раздел админа</a>
                   </li>
                 {% endif %}
               {% endfor %}
