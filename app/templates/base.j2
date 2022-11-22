@@ -61,26 +61,25 @@
         <li class="nav-item"><a href="{{ url_for('core.about') }}" class="nav-link">Обо мне</a></li>
         <li class="nav-item"><a href="{{ url_for('parts.ved') }}" class="nav-link">Наполнить базу кодов</a></li>
         <li class="nav-item"><a href="{{ url_for('parts.part') }}" class="nav-link">Запчасти</a></li>
-          {% if current_user.is_anonymous %}
-                <li class="header-nav__item">
-                  <a class="header-nav__link link" href="{{ url_for('security.login') }}">Войти</a>
-                </li>
-              {% else %}
-                <li class="header-nav__item">
-                  <a class="header-nav__link link" href="{{ url_for('security.logout') }}">Выйти</a>
-                </li>
-                <li class="header-nav__item">
-                  {# <a class="header-nav__link link" href="{{ url_for('lk.index') }}">Личный кабинет</a> #}
-                </li>
-              {% endif %}
-              {% for role in current_user.roles %}
-                {% if role.name == 'admin' %}
-                  <li class="header-nav__item">
-                    <a class="header-nav__link link" href="{{ url_for('admin.index') }}">Раздел админа</a>
-                  </li>
-                {% endif %}
-              {% endfor %}
-            </ul>
+        {% if current_user.is_anonymous %}
+          <li class="nav-item">
+           <a class="nav-link" href="{{ url_for('security.login') }}">Войти</a>
+          </li>
+        {% else %}
+          <li class="nav-item">
+            <a class="nav-link" href="{{ url_for('security.logout') }}">Выйти</a>
+          </li>
+          <li class="nav-item">
+             {# <a class="header-nav__link link" href="{{ url_for('lk.index') }}">Личный кабинет</a> #}
+          </li>
+        {% endif %}
+        {% for role in current_user.roles %}
+        {% if role.name == 'admin' %}
+          <li class="nav-item">
+            <a class="nav-link" href="{{ url_for('admin.index') }}">Раздел админа</a>
+          </li>
+        {% endif %}
+        {% endfor %}
       </ul>
     </header>
   </div>
