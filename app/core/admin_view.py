@@ -10,7 +10,7 @@ admin = Blueprint("admin", __name__, template_folder="templates")
 
 @admin.get("/admin")
 @login_required
-@permissions_required("admin")
+#@permissions_required("admin")
 def index():
     """Главная страница админки."""
     return render_template("admin/index.j2")
