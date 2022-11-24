@@ -61,7 +61,7 @@ def about():
             user_id=current_user.id,
         )
         core_db.save()
-        return render_template('index.j2', form=feedback_form)
+        return render_template('about.j2', form=feedback_form)
     return render_template('about.j2', form=feedback_form)
 
 
