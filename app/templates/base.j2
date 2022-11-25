@@ -69,14 +69,15 @@
           <li class="nav-item">
             <a class="nav-link" href="{{ url_for('security.logout') }}">Выйти</a>
           </li>
-          <li class="nav-item">
-             {# <a class="header-nav__link link" href="{{ url_for('lk.index') }}">Личный кабинет</a> #}
-          </li>
+          
         {% endif %}
         {% for role in current_user.roles %}
         {% if role.name == 'admin' %}
           <li class="nav-item">
             <a class="nav-link" href="{{ url_for('admin.index') }}">Раздел админа</a>
+          </li>
+          <li class="nav-item">
+             <a class="nav-link" href="{{ url_for('core.my_lk') }}">Личный кабинет</a>
           </li>
         {% endif %}
         {% endfor %}
