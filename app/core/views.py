@@ -65,7 +65,7 @@ def about():
     return render_template('about.j2', form=feedback_form)
 
 
-@core.route('/lk')
+@core.route('/lk', endpoint='my_lk')
 def lk():
     g.page_title = 'Личный кабинет'
     return render_template('lk/index.j2')
