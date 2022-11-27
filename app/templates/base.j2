@@ -45,6 +45,7 @@
           font-size: 3.5rem;
         }
       }
+      
     </style>
 
     
@@ -59,8 +60,7 @@
         <li class="nav-item"><a href="{{ url_for('core.index') }}" class="nav-link active" aria-current="page">Главная</a></li>
         {# <li class="nav-item"><a href="{{ url_for_security('login') }}" class="nav-link">Войти</a></li> #}
         <li class="nav-item"><a href="{{ url_for('core.about') }}" class="nav-link">Обо мне</a></li>
-        <li class="nav-item"><a href="{{ url_for('parts.ved') }}" class="nav-link">Наполнить базу кодов</a></li>
-        <li class="nav-item"><a href="{{ url_for('parts.part') }}" class="nav-link">Запчасти</a></li>
+     
         {% if current_user.is_anonymous %}
           <li class="nav-item">
            <a class="nav-link" href="{{ url_for('security.login') }}">Войти</a>
@@ -78,6 +78,12 @@
           </li>
           <li class="nav-item">
              <a class="nav-link" href="{{ url_for('core.my_lk') }}">Личный кабинет</a>
+          </li>
+          <li class="nav-item">
+              <a href="{{ url_for('parts.ved') }}" class="nav-link">Наполнить базу кодов</a>
+          </li>
+          <li class="nav-item">
+              <a href="{{ url_for('parts.part') }}" class="nav-link">Запчасти</a>
           </li>
         {% endif %}
         {% endfor %}
