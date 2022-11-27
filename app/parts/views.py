@@ -7,6 +7,7 @@ parts = Blueprint('parts', __name__, template_folder='templates')
 
 
 @parts.route('/parts/<int:id>/update', methods=['POST', 'GET'])
+@roles_required("admin")
 def parts_update(id):
     """Редактировать запись"""
     ved_db = SpareParts.query.get(id)
@@ -25,6 +26,7 @@ def parts_update(id):
 
   
 @parts.route('/parts/<int:id_post>/del')
+@roles_required("admin")
 def parts_delete(id_post):
     """Удаление из БД"""
     ved_db = SpareParts.query.get_or_404(id_post)
@@ -42,6 +44,7 @@ def part():
 
 
 @parts.route('/parts/<int:id>')
+@roles_required("admin")
 def parts_detail(id):
     """Обработка нужного url адреса"""
     ved_db = SpareParts.query.get(id)
@@ -49,6 +52,7 @@ def parts_detail(id):
 
 
 @parts.route('/ved', methods=['POST', 'GET'])
+@roles_required("admin")
 def ved():
     """Создание бд кодов только из модели напрямую"""
     if request.method == "POST":
